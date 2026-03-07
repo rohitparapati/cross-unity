@@ -1,42 +1,56 @@
+import Link from "next/link"
+import { Button } from "@/components/ui/button"
+
 export default function HomePage() {
   return (
-    <div className="py-10">
-      <section className="rounded-3xl border bg-gradient-to-b from-slate-50 to-white p-6 sm:p-10">
-        <div className="mx-auto max-w-2xl text-center">
-          <p className="text-xs font-semibold uppercase tracking-wider text-slate-500">
-            MVP in progress
-          </p>
-          <h1 className="mt-3 text-3xl font-bold tracking-tight sm:text-5xl">
-            Find trusted home service providers near you.
-          </h1>
-          <p className="mt-4 text-base text-slate-600 sm:text-lg">
-            Browse without an account. Providers can register, get verified, and manage inquiries in a
-            simple dashboard.
-          </p>
+    <div className="space-y-16 py-16">
 
-          <div className="mt-6 flex flex-col gap-3 sm:flex-row sm:justify-center">
-            <a
-              href="/providers"
-              className="rounded-xl bg-slate-900 px-5 py-3 text-sm font-semibold text-white hover:bg-slate-800"
-            >
-              Browse Providers
-            </a>
-            <a
-              href="/provider/register"
-              className="rounded-xl border px-5 py-3 text-sm font-semibold text-slate-800 hover:bg-slate-50"
-            >
-              I’m a Provider
-            </a>
-          </div>
+      <section className="text-center space-y-6">
+        <h1 className="text-5xl font-bold">
+          Find Trusted Home Services Near You
+        </h1>
 
-          <div className="mt-8 rounded-2xl border bg-white p-4 text-left">
-            <div className="text-sm font-semibold">Quick health check</div>
-            <div className="mt-2 text-sm text-slate-600">
-              Open <span className="font-mono">/api/health</span> to confirm the backend is alive.
-            </div>
-          </div>
+        <p className="text-lg text-gray-600 max-w-xl mx-auto">
+          Browse verified service providers like plumbers, electricians, and
+          cleaners in your area.
+        </p>
+
+        <div className="flex justify-center gap-4">
+          <Link href="/providers">
+            <Button size="lg">Browse Providers</Button>
+          </Link>
+
+          <Link href="/provider/register">
+            <Button variant="outline" size="lg">
+              Become a Provider
+            </Button>
+          </Link>
         </div>
       </section>
+
+      <section className="grid md:grid-cols-3 gap-8 text-center">
+        <div>
+          <h3 className="font-semibold text-xl">Search Services</h3>
+          <p className="text-gray-500">
+            Find professionals for plumbing, electrical work, landscaping and more.
+          </p>
+        </div>
+
+        <div>
+          <h3 className="font-semibold text-xl">Verified Providers</h3>
+          <p className="text-gray-500">
+            Admin-reviewed professionals you can trust.
+          </p>
+        </div>
+
+        <div>
+          <h3 className="font-semibold text-xl">Easy Contact</h3>
+          <p className="text-gray-500">
+            Contact providers instantly without creating an account.
+          </p>
+        </div>
+      </section>
+
     </div>
-  );
+  )
 }
