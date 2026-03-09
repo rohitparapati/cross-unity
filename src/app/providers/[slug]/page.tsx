@@ -11,9 +11,14 @@ type Props = {
 export default async function ProviderDetailPage({ params }: Props) {
   const { slug } = await params;
 
-  const provider = await db.provider.findUnique({
-    where: { slug },
-    include: { category: true },
+  const provider = await db.provider.findFirst({
+    where: {
+      slug,
+      status: 'APPROVED',
+    },
+    include: {
+      category: true,
+    },
   });
 
   if (!provider) {
@@ -23,14 +28,15 @@ export default async function ProviderDetailPage({ params }: Props) {
   return (
     <div className="py-10">
       <div className="max-w-3xl space-y-6">
-        <div className="flex items-center gap-3">
+        <div className="flex flex-wrap items-center gap-3">
           <h1 className="text-3xl font-bold tracking-tight">
             {provider.businessName}
           </h1>
+
           {provider.isVerified ? (
             <Badge>Verified</Badge>
           ) : (
-            <Badge variant="secondary">Pending</Badge>
+            <Badge variant="secondary">Approved</Badge>
           )}
         </div>
 
@@ -63,9 +69,6 @@ export default async function ProviderDetailPage({ params }: Props) {
             <p>
               <span className="font-medium">Availability:</span>{' '}
               {provider.availabilityText ?? 'Not provided'}
-            </p>
-            <p>
-              <span className="font-medium">Status:</span> {provider.status}
             </p>
           </div>
         </div>
