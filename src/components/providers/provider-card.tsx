@@ -1,31 +1,56 @@
-import { Provider } from "@/lib/types/provider"
-import { Card, CardContent, CardHeader, CardTitle } from "@/components/ui/card"
-import { Badge } from "@/components/ui/badge"
-import { Button } from "@/components/ui/button"
+import Link from 'next/link';
+import { Badge } from '@/components/ui/badge';
+import { Button } from '@/components/ui/button';
+import { Card, CardContent, CardHeader, CardTitle } from '@/components/ui/card';
+import { ProviderListItem } from '@/lib/types/provider';
 
 type Props = {
-  provider: Provider
-}
+  provider: ProviderListItem;
+};
 
 export default function ProviderCard({ provider }: Props) {
   return (
-    <Card className="hover:shadow-lg transition">
-      <CardHeader>
-        <CardTitle className="flex justify-between items-center">
-          {provider.name}
-          {provider.verified && <Badge>Verified</Badge>}
-        </CardTitle>
+    <Card className="transition hover:shadow-lg">
+      <CardHeader className="space-y-3">
+        <div className="flex items-start justify-between gap-3">
+          <div>
+            <CardTitle className="text-xl">{provider.businessName}</CardTitle>
+            <p className="mt-1 text-sm text-slate-500">
+              {provider.category.name} • {provider.city}, {provider.state}
+            </p>
+          </div>
+
+          {provider.isVerified ? (
+            <Badge>Verified</Badge>
+          ) : (
+            <Badge variant="secondary">Pending</Badge>
+          )}
+        </div>
       </CardHeader>
 
-      <CardContent className="space-y-2">
-        <p className="text-sm text-gray-500">{provider.category}</p>
+      <CardContent className="space-y-4">
+        <p className="line-clamp-3 text-sm text-slate-600">{provider.bio}</p>
 
-        <p className="text-sm">{provider.description}</p>
+        <div className="space-y-1 text-sm text-slate-600">
+          {provider.pricingText ? (
+            <p>
+              <span className="font-medium text-slate-800">Pricing:</span>{' '}
+              {provider.pricingText}
+            </p>
+          ) : null}
 
-        <p className="text-sm font-medium">⭐ {provider.rating}</p>
+          {provider.availabilityText ? (
+            <p>
+              <span className="font-medium text-slate-800">Availability:</span>{' '}
+              {provider.availabilityText}
+            </p>
+          ) : null}
+        </div>
 
-        <Button className="w-full">View Profile</Button>
+        <Button asChild className="w-full">
+          <Link href={`/providers/${provider.slug}`}>View Profile</Link>
+        </Button>
       </CardContent>
     </Card>
-  )
+  );
 }
