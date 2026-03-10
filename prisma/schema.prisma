@@ -7,6 +7,27 @@ datasource db {
   url      = env("DATABASE_URL")
 }
 
+enum UserRole {
+  PROVIDER
+  ADMIN
+}
+
+enum ProviderStatus {
+  PENDING
+  APPROVED
+  DENIED
+}
+
+model User {
+  id           String    @id @default(cuid())
+  email        String    @unique
+  passwordHash String
+  role         UserRole  @default(PROVIDER)
+  createdAt    DateTime  @default(now())
+  updatedAt    DateTime  @updatedAt
+  provider     Provider?
+}
+
 model Category {
   id        String     @id @default(cuid())
   name      String     @unique
@@ -17,24 +38,27 @@ model Category {
 }
 
 model Provider {
-  id               String   @id @default(cuid())
+  id               String         @id @default(cuid())
+  userId           String?        @unique
   businessName     String
-  slug             String   @unique
+  slug             String         @unique
   categoryId       String
-  email            String   @unique
+  email            String         @unique
   phone            String?
-  bio              String   @db.Text
+  bio              String         @db.Text
   city             String
   state            String
   zip              String
   pricingText      String?
   availabilityText String?
-  isVerified       Boolean  @default(false)
-  status           String   @default("PENDING")
-  createdAt        DateTime @default(now())
-  updatedAt        DateTime @updatedAt
+  isVerified       Boolean        @default(false)
+  status           ProviderStatus @default(PENDING)
+  denialReason     String?        @db.Text
+  createdAt        DateTime       @default(now())
+  updatedAt        DateTime       @updatedAt
 
-  category Category @relation(fields: [categoryId], references: [id], onDelete: Cascade)
+  user     User?     @relation(fields: [userId], references: [id], onDelete: SetNull)
+  category Category  @relation(fields: [categoryId], references: [id], onDelete: Cascade)
 
   @@index([categoryId])
   @@index([city])
