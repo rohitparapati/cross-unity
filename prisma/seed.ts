@@ -1,5 +1,5 @@
 import bcrypt from 'bcryptjs';
-import { PrismaClient, ProviderStatus, UserRole } from '@prisma/client';
+import { PrismaClient } from '@prisma/client';
 
 const prisma = new PrismaClient();
 
@@ -47,7 +47,7 @@ async function main() {
     data: {
       email: 'admin@crossunity.local',
       passwordHash: adminPasswordHash,
-      role: UserRole.ADMIN,
+      role: 'ADMIN',
     },
   });
 
@@ -55,7 +55,7 @@ async function main() {
     data: {
       email: 'mike@example.com',
       passwordHash: providerPasswordHash,
-      role: UserRole.PROVIDER,
+      role: 'PROVIDER',
     },
   });
 
@@ -74,7 +74,7 @@ async function main() {
       pricingText: 'Service starts at $75',
       availabilityText: 'Mon-Sat 8AM - 6PM',
       isVerified: true,
-      status: ProviderStatus.APPROVED,
+      status: 'APPROVED',
     },
   });
 
@@ -92,7 +92,7 @@ async function main() {
       pricingText: 'Inspection $90',
       availabilityText: 'Mon-Fri 9AM - 5PM',
       isVerified: true,
-      status: ProviderStatus.APPROVED,
+      status: 'APPROVED',
     },
   });
 
@@ -110,7 +110,7 @@ async function main() {
       pricingText: '$50 per visit',
       availabilityText: 'Mon-Sat 7AM - 4PM',
       isVerified: false,
-      status: ProviderStatus.PENDING,
+      status: 'PENDING',
     },
   });
 
@@ -128,7 +128,7 @@ async function main() {
       pricingText: 'Deep cleaning from $120',
       availabilityText: 'Tue-Sat 8AM - 5PM',
       isVerified: true,
-      status: ProviderStatus.APPROVED,
+      status: 'APPROVED',
     },
   });
 
