@@ -4,6 +4,7 @@ import { PrismaClient } from '@prisma/client';
 const prisma = new PrismaClient();
 
 async function main() {
+  await prisma.inquiry.deleteMany();
   await prisma.provider.deleteMany();
   await prisma.user.deleteMany();
   await prisma.category.deleteMany();
@@ -43,7 +44,7 @@ async function main() {
   const adminPasswordHash = await bcrypt.hash('Admin@123456', 10);
   const providerPasswordHash = await bcrypt.hash('Provider@123456', 10);
 
-  const adminUser = await prisma.user.create({
+  await prisma.user.create({
     data: {
       email: 'admin@crossunity.local',
       passwordHash: adminPasswordHash,
@@ -59,7 +60,7 @@ async function main() {
     },
   });
 
-  await prisma.provider.create({
+  const mikeProvider = await prisma.provider.create({
     data: {
       userId: mikeUser.id,
       businessName: "Mike's Plumbing",
@@ -132,10 +133,30 @@ async function main() {
     },
   });
 
+  await prisma.inquiry.createMany({
+    data: [
+      {
+        providerId: mikeProvider.id,
+        name: 'Sarah Johnson',
+        email: 'sarah@example.com',
+        phone: '314-555-2101',
+        message: 'Hi, I need help fixing a leaking kitchen sink. Are you available tomorrow morning?',
+        status: 'NEW',
+      },
+      {
+        providerId: mikeProvider.id,
+        name: 'Daniel Smith',
+        email: 'daniel@example.com',
+        phone: '314-555-2102',
+        message: 'Can you provide an estimate for bathroom pipe replacement this week?',
+        status: 'RESPONDED',
+      },
+    ],
+  });
+
   console.log('Database seeded successfully.');
   console.log('Admin login: admin@crossunity.local / Admin@123456');
   console.log('Provider login: mike@example.com / Provider@123456');
-  console.log('Created admin user id:', adminUser.id);
 }
 
 main()
