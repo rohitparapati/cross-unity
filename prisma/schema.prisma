@@ -79,6 +79,8 @@ model Inquiry {
   phone      String?
   message    String        @db.Text
   status     InquiryStatus @default(NEW)
+  ipAddress  String?
+  userAgent  String?
   createdAt  DateTime      @default(now())
   updatedAt  DateTime      @updatedAt
 
@@ -87,4 +89,5 @@ model Inquiry {
   @@index([providerId])
   @@index([status])
   @@index([createdAt])
+  @@index([email])
 }
